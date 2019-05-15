@@ -1,0 +1,19 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "react-hooks"
+  ],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "react/jsx-filename-extension": "off",
+    "react/prop-types": "off",
+    "max-len":"warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}
