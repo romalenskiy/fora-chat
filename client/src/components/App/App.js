@@ -1,19 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import LoginForm from '../LoginForm'
+import React, { Fragment } from 'react'
+import { withRouter, Route, Redirect } from 'react-router-dom'
 
-function App() {
-  const [username, setUsername] = useState('')
+import LoginForm from '../LoginForm'
+import ChatRoom from '../ChatRoom'
+
+import useInputControl from '../../customHooks/useInputControl'
+
+function App(props) {
+  const [username, setUsername, isUsernameValid] = useInputControl()
+  const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useInputControl()
 
   function onUsernameChange(event) {
     setUsername(event.target.value)
   }
 
+  function onUsernameSubmit(event) {
+    event.preventDefault()
+    if (!isUsernameValid) return
+    props.history.push('/global')
+  }
+
+  function onCurrentMessageChange(event) {
+    setCurrentMessage(event.target.value)
+  }
+
+  function onCurrentMessageSubmit(event) {
+    event.preventDefault()
+    if (!isCurrentMessageValid) return
+  }
+
   return (
     <div className="column app">
-      <span className="row logo">Fora Chat</span>
-      <LoginForm username={username} onChange={onUsernameChange} />
+      <Route
+        exact
+        path="/"
+        render={() => (
+          <Fragment>
+            <span className="row logo">Fora Chat</span>
+            <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
+          </Fragment>
+        )}
+      />
+
+      <Route
+        path="/global"
+        render={() => (isUsernameValid ? <ChatRoom currentMessage={currentMessage} isCurrentMessageValid={isCurrentMessageValid} onChange={onCurrentMessageChange} onSubmit={onCurrentMessageSubmit} /> : <Redirect to="/" />)}
+      />
     </div>
   )
 }
 
-export default App
+export default withRouter(App)
