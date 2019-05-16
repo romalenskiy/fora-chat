@@ -6,10 +6,12 @@
 // ================
 $background-primary: #151E27;
 $background-primary-dark: scale-color($background-primary, $lightness: -20%);
+$background-primary-bright: #456A94;
 $background-secondary: #222d3b;
 
 $text-primary: #FFFFFF;
 $text-secondary: #66727E;
+$text-green: #a1c395;
 
 $button-primary: #62A9DC; 
 $button-primary-dark: scale-color($button-primary, $lightness: -20%);
@@ -52,6 +54,7 @@ $button-primary-bright: #65CDFB;
 .column {
 	display: flex;
 	flex-direction: column;
+	min-height: 0; // !!! This line fixing bug in Firefox with overflow-y !!!
 }
 
 .wrap {
@@ -146,6 +149,8 @@ $button-primary-bright: #65CDFB;
 
 .chat-room__messages {
 	flex-basis: 86%;
+	overflow-y: auto;
+	overflow-x: hidden;
 	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.7);
 }
 
@@ -181,6 +186,43 @@ $button-primary-bright: #65CDFB;
 .chat-room__submit-button_hidden {
 	cursor: initial;
 	color: transparent;
+}
+
+// ================
+// Message
+// ================
+.message {
+	&:first-of-type {
+		margin-top: 0.4rem;
+	}
+	&:last-of-type {
+		margin-bottom: 0.4rem;
+	}
+}
+
+.message__username {
+	color: $text-green;
+	font-weight: bold;
+}
+
+.message__text {
+	max-width: 70%; 
+	margin: 0.25rem 0;
+	padding: 1rem;
+	word-wrap: break-word;
+}
+
+.message__text_my {
+	margin-left: auto;
+	margin-right: 0.5rem;
+	border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+	background-color: $background-primary-bright;
+}
+
+.message__text_foreign {
+	margin-left: 0.5rem;
+	border-radius: 0.5rem 1.5rem 1.5rem 1.5rem;
+	background-color: $background-secondary;
 }
 
 // ================
