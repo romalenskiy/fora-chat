@@ -34,7 +34,7 @@ function App(props) {
 
       <Route
         path="/global"
-        render={() => (isUsernameValid ? <ChatRoom /> : <Redirect to="/" />)}
+        render={() => (isUsernameValid ? <ChatRoom username={username} /> : <Redirect to="/" />)}
       />
     </div>
   )

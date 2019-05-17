@@ -5,20 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Message from '../Message'
 import useInputControl from '../../customHooks/useInputControl'
 
-const MESSAGES = [
-  { type: 'my', value: 'Fugiat qui ipsum labore et aliquip ad ipsum qui sit nulla non.' },
-  { type: 'my', value: 'Qui nisi quis cupidatat dolor enim sunt dolore culpa exercitation minim. Nostrud eiusmod anim cupidatat fugiat.' },
-  { type: 'my', value: 'Amet laboris anim exercitation sunt dolor. Labore consequat deserunt do incididunt labore tempor culpa minim nisi officia. Sint laborum laborum eiusmod minim officia anim in fugiat aute. Duis enim irure ut ea amet ut reprehenderit.' },
-  { type: 'foreign', username: 'User 1', value: 'In consequat commodo nulla ipsum irure commodo tempor enim.' },
-  { type: 'foreign', username: 'User 2', value: 'Quis est incididunt id do sint anim proident sunt. Fugiat dolore fugiat do cupidatat.' },
-  { type: 'foreign', username: 'User 3', value: 'Enim Lorem commodo cupidatat sit. Nulla dolor magna aute ea labore proident nostrud ad culpa culpa. Ex dolor qui officia deserunt laborum mollit velit culpa ipsum mollit laborum laboris. Est consequat nisi nostrud ad non cupidatat laborum tempor tempor.' },
-]
+function ChatRoom(props) {
+  const { username } = props
 
-function ChatRoom() {
+  // Ref for socket
   const socket = useRef()
+  // Need for auto scrolling when new message appears
   const chatRoomMessagesRef = useRef()
+
+  // User-entered message at the moment
   const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useInputControl()
-  const [messages, setMessages] = useState(MESSAGES)
+  // All chat room messages
+  const [messages, setMessages] = useState([])
 
   // Connecting use to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
@@ -34,7 +32,8 @@ function ChatRoom() {
   // we have to use "once" instead of "on" to avoid registering another one listener on each effect firing.
   useEffect(() => {
     socket.current.once('chat message', (message) => {
-      setMessages([...messages, { type: 'foreign', username: 'User', value: message }])
+      const { value } = message
+      setMessages([...messages, { type: 'foreign', username: message.username, value }])
     })
   }, [messages])
 
@@ -52,10 +51,13 @@ function ChatRoom() {
     event.preventDefault()
     if (!isCurrentMessageValid) return
 
-    socket.current.emit('chat message', currentMessage)
+    // Emitting new message for users-recipients
+    const newMessageForRecipients = { username, value: currentMessage }
+    socket.current.emit('chat message', newMessageForRecipients)
 
-    const newMessage = { type: 'my', value: currentMessage }
-    setMessages([...messages, newMessage])
+    // Render new message for user-sender
+    const newMessageForSender = { type: 'my', value: currentMessage }
+    setMessages([...messages, newMessageForSender])
     setCurrentMessage('')
   }
 
@@ -71,8 +73,8 @@ function ChatRoom() {
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>
         {
           messages.map((message, index) => {
-            const { type, username, value } = message
-            return <Message key={index} type={type} username={username} value={value} />
+            const { type, value } = message
+            return <Message key={index} type={type} username={message.username} value={value} />
           })
         }
       </div>
