@@ -18,9 +18,9 @@ function ChatRoom(props) {
   // All chat room messages
   const [messages, setMessages] = useState([])
 
-  // Connecting use to socket on component first render (and disconnecting on cleanup)
+  // Connecting user to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
-    socket.current = io(`http://${process.env.NODE_ENV === 'production' ? '192.168.100.103' : 'localhost'}:5000`)
+    socket.current = io(`${process.env.NODE_ENV === 'production' ? 'https://192.168.100.103' : 'http://localhost'}:5000`)
 
     return () => {
       socket.current.disconnect()
