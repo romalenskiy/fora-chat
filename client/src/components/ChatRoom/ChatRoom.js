@@ -32,8 +32,7 @@ function ChatRoom(props) {
   // we have to use "once" instead of "on" to avoid registering another one listener on each effect firing.
   useEffect(() => {
     socket.current.once('chat message', (message) => {
-      const { value } = message
-      setMessages([...messages, { type: 'foreign', username: message.username, value }])
+      setMessages([...messages, message])
     })
   }, [messages])
 
@@ -51,12 +50,13 @@ function ChatRoom(props) {
     event.preventDefault()
     if (!isCurrentMessageValid) return
 
+    const newMessage = { value: currentMessage, timestamp: Date.now() }
     // Emitting new message for users-recipients
-    const newMessageForRecipients = { username, value: currentMessage }
+    const newMessageForRecipients = { type: 'foreign', username, ...newMessage }
     socket.current.emit('chat message', newMessageForRecipients)
 
     // Render new message for user-sender
-    const newMessageForSender = { type: 'my', value: currentMessage }
+    const newMessageForSender = { type: 'my', ...newMessage }
     setMessages([...messages, newMessageForSender])
     setCurrentMessage('')
   }
@@ -73,8 +73,8 @@ function ChatRoom(props) {
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>
         {
           messages.map((message, index) => {
-            const { type, value } = message
-            return <Message key={index} type={type} username={message.username} value={value} />
+            const { type, value, timestamp } = message
+            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} />
           })
         }
       </div>

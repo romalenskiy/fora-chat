@@ -11,6 +11,7 @@ $background-secondary: #222d3b;
 
 $text-primary: #FFFFFF;
 $text-secondary: #66727E;
+$text-secondary-bright: #81A3C8;
 $text-green: #a1c395;
 
 $button-primary: #62A9DC; 
@@ -202,29 +203,46 @@ $button-primary-bright: #65CDFB;
 	}
 }
 
-.message__username {
-	color: $text-green;
-	font-weight: bold;
-}
-
-.message__text {
+.message__balloon {
 	max-width: 70%; 
 	margin: 0.25rem 0;
 	padding: 1rem;
-	word-wrap: break-word;
 }
 
-.message__text_my {
+.message__balloon_my {
 	margin-left: auto;
 	margin-right: 0.5rem;
 	border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
 	background-color: $background-primary-bright;
 }
 
-.message__text_foreign {
+.message__balloon_foreign {
 	margin-left: 0.5rem;
 	border-radius: 0.5rem 1.5rem 1.5rem 1.5rem;
 	background-color: $background-secondary;
+}
+
+.message__username {
+	color: $text-green;
+	font-weight: bold;
+	margin-bottom: 0.2rem;
+}
+
+.message__text {
+	word-wrap: break-word;
+	margin-bottom: 0.2rem;
+}
+
+.message__timestamp {
+	font-size: 0.7rem;
+}
+
+.message__timestamp_my {
+	color: $text-secondary-bright;
+}
+
+.message__timestamp_foreign {
+	color: $text-secondary;
 }
 
 // ================
