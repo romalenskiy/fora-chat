@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
 const path = require('path')
 const port = process.env.PORT || 5000
 
@@ -17,7 +19,21 @@ if(process.env.NODE_ENV === 'production') {
   })
 }
 
+// Socket
+io.on('connection', (socket) => {
+  console.log('a user connected')
+
+  socket.on('chat message', (message) => {
+    console.log(`message: ${message}`)
+    socket.broadcast.emit('chat message', message)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
 // Start server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`server listening on port: ${port}`)
 })
