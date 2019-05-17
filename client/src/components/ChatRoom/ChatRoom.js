@@ -20,7 +20,7 @@ function ChatRoom(props) {
 
   // Connecting use to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
-    socket.current = io('http://localhost:5000')
+    socket.current = io(`http://${process.env.NODE_ENV === 'production' ? '192.168.100.103' : 'localhost'}:5000`)
 
     return () => {
       socket.current.disconnect()
