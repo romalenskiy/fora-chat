@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
-import { withRouter, Route, Redirect } from 'react-router-dom'
+import React, { useState, Fragment } from 'react'
+import { withRouter, Route } from 'react-router-dom'
 
 import LoginForm from '../LoginForm'
 import ChatRoom from '../ChatRoom'
@@ -7,7 +7,10 @@ import ChatRoom from '../ChatRoom'
 import useInputControl from '../../customHooks/useInputControl'
 
 function App(props) {
+  const { history } = props
+
   const [username, setUsername, isUsernameValid] = useInputControl()
+  const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false)
 
   function onUsernameChange(event) {
     setUsername(event.target.value)
@@ -16,7 +19,16 @@ function App(props) {
   function onUsernameSubmit(event) {
     event.preventDefault()
     if (!isUsernameValid) return
-    props.history.push('/global')
+
+    setIsUsernameSubmitted(true)
+
+    if (history.location.pathname === '/') {
+      (async () => {
+        const response = await fetch('/api/generateRoomId')
+        const newRoomId = await response.text()
+        history.push(`/rooms/${newRoomId}`)
+      })()
+    }
   }
 
   return (
@@ -33,8 +45,17 @@ function App(props) {
       />
 
       <Route
-        path="/global"
-        render={() => (isUsernameValid ? <ChatRoom username={username} /> : <Redirect to="/" />)}
+        path="/rooms/:roomId"
+        render={properties => (
+          isUsernameSubmitted
+            ? <ChatRoom {...properties} username={username} />
+            : (
+              <Fragment>
+                <span className="row logo">Fora Chat</span>
+                <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
+              </Fragment>
+            )
+        )}
       />
     </div>
   )

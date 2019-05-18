@@ -7,7 +7,8 @@ import UserListDropdown from '../UserListDropdown'
 import useInputControl from '../../customHooks/useInputControl'
 
 function ChatRoom(props) {
-  const { username } = props
+  const { username, match } = props
+  const { roomId } = match.params
 
   // Ref for socket
   const socket = useRef()
@@ -29,7 +30,7 @@ function ChatRoom(props) {
 
   // Connect user to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
-    socket.current = io()
+    socket.current = io('/', { query: { roomId } })
 
     return () => {
       socket.current.disconnect()
