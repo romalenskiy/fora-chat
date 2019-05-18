@@ -1,17 +1,11 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const USERS = [
-  'USER 1',
-  'USER 2',
-  'USER 3',
-]
 
 function UserListDropdown(props) {
-  const { handleMessagesOverlayToggle, handleMessagesOverlayOff } = props
+  const { users, handleMessagesOverlayToggle, handleMessagesOverlayOff } = props
 
   // Chat room users
-  const [users, setUsers] = useState(USERS)
   const [isUserListVisible, setIsUserListVisible] = useState(false)
 
   function onDropdownClick() {
@@ -36,7 +30,10 @@ function UserListDropdown(props) {
 
       <div className={usersListClass}>
         {
-          users.map(user => <div className="user-list-dropdown__user">{user}</div>)
+          users.length && users.map((user) => {
+            const { id, username } = user
+            return <div key={id} className="user-list-dropdown__user">{username}</div>
+          })
         }
       </div>
     </div>

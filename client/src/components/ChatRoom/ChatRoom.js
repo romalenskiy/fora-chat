@@ -24,7 +24,10 @@ function ChatRoom(props) {
   // Chat overlay (blackout then dorpdown with users open)
   const [isMessagesOverlayOn, setIsMessagesOverlayOn] = useState(false)
 
-  // Connecting user to socket on component first render (and disconnecting on cleanup)
+  // Chat room users
+  const [users, setUsers] = useState([])
+
+  // Connect user to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
     socket.current = io()
 
@@ -33,7 +36,22 @@ function ChatRoom(props) {
     }
   }, [])
 
-  // Adding listener on new message receive.
+  useEffect(() => {
+    // Emit data about newly connected user to other users
+    socket.current.emit('user connected chat room', username)
+
+    // Add listener on new users connected
+    socket.current.on('user connected chat room', (newUserList) => {
+      setUsers(newUserList)
+    })
+
+    // Add listener on user disconnected
+    socket.current.on('user disconnected chat room', (newUserList) => {
+      setUsers(newUserList)
+    })
+  }, [])
+
+  // Add listener on new message receive.
   // Because of subtlety in work of useEffect hook (need to provide "fresh" messages state variable on every render),
   // we have to use "once" instead of "on" to avoid registering another one listener on each effect firing.
   useEffect(() => {
@@ -42,7 +60,7 @@ function ChatRoom(props) {
     })
   }, [messages])
 
-  // Scrolling to bottom when new message appears
+  // Scroll to bottom when new message appears
   useEffect(() => {
     const messagesRef = chatRoomMessagesRef.current
     if (messagesRef) { messagesRef.scrollTop = messagesRef.scrollHeight }
@@ -57,7 +75,8 @@ function ChatRoom(props) {
     if (!isCurrentMessageValid) return
 
     const newMessage = { value: currentMessage, timestamp: Date.now() }
-    // Emitting new message for users-recipients
+
+    // Emit new message for users-recipients
     const newMessageForRecipients = { type: 'foreign', username, ...newMessage }
     socket.current.emit('chat message', newMessageForRecipients)
 
@@ -82,7 +101,7 @@ function ChatRoom(props) {
   return (
     <div className="column chat-room">
       <div className="row chat-room__header">
-        <UserListDropdown handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} />
+        <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} />
       </div>
 
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>

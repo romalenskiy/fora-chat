@@ -20,8 +20,16 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 // Socket
+let userList = []
+
 io.on('connection', (socket) => {
   console.log('a user connected')
+
+  socket.on('user connected chat room', (username) => {
+    console.log(`user ${username} connected`)
+    userList.push({ id: socket.id, username })
+    io.emit('user connected chat room', userList)
+  })
 
   socket.on('chat message', (message) => {
     console.log(`message: ${message.value}`)
@@ -30,6 +38,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user disconnected')
+    userList = userList.filter((user) => user.id !== socket.id)
+    socket.broadcast.emit('user disconnected chat room', userList)
   })
 })
 
