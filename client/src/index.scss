@@ -46,7 +46,8 @@ $button-primary-bright: #65CDFB;
 
 .overlay {
 	display: none;
-	position: absolute;
+	position: fixed;
+	z-index: 9;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -148,6 +149,7 @@ $button-primary-bright: #65CDFB;
 
 .chat-room__header, .chat-room__input-form {
 	position: relative;
+	z-index: 99;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 }
@@ -196,6 +198,7 @@ $button-primary-bright: #65CDFB;
 
 .chat-room__submit-button {
 	color: $button-primary-bright;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .chat-room__submit-button_hidden {
@@ -224,8 +227,9 @@ $button-primary-bright: #65CDFB;
 .user-list-dropdown__list {
 	display: none;
 	position: absolute;
-	z-index: 99;
 	top: 4rem;
+	max-height: 20rem;
+	overflow-y: auto;
 	min-width: 80%;
 	padding: 1rem;
 	background-color: $background-secondary;
