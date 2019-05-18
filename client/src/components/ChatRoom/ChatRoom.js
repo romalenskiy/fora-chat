@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Message from '../Message'
+import UserListDropdown from '../UserListDropdown'
 import useInputControl from '../../customHooks/useInputControl'
 
 function ChatRoom(props) {
@@ -10,13 +11,18 @@ function ChatRoom(props) {
 
   // Ref for socket
   const socket = useRef()
+
   // Need for auto scrolling when new message appears
   const chatRoomMessagesRef = useRef()
 
   // User-entered message at the moment
   const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useInputControl()
+
   // All chat room messages
   const [messages, setMessages] = useState([])
+
+  // Chat overlay (blackout then dorpdown with users open)
+  const [isMessagesOverlayOn, setIsMessagesOverlayOn] = useState(false)
 
   // Connecting user to socket on component first render (and disconnecting on cleanup)
   useEffect(() => {
@@ -61,16 +67,26 @@ function ChatRoom(props) {
     setCurrentMessage('')
   }
 
+  function handleMessagesOverlayToggle() {
+    setIsMessagesOverlayOn(!isMessagesOverlayOn)
+  }
+
+  function handleMessagesOverlayOff() {
+    setIsMessagesOverlayOn(false)
+  }
 
   const submitButtonClass = `button ${isCurrentMessageValid ? 'chat-room__submit-button' : 'chat-room__submit-button_hidden'}`
+  let messagesOverlayClass = 'overlay'
+  if (isMessagesOverlayOn) { messagesOverlayClass += ' overlay_on' }
 
   return (
     <div className="column chat-room">
       <div className="row chat-room__header">
-        <span className="chat-room__name">Global chat room</span>
+        <UserListDropdown handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} />
       </div>
 
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>
+        <div className={messagesOverlayClass} />
         {
           messages.map((message, index) => {
             const { type, value, timestamp } = message

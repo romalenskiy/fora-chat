@@ -44,6 +44,21 @@ $button-primary-bright: #65CDFB;
 	cursor: pointer;
 }
 
+.overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #000;
+	opacity: 0.5;
+}
+
+.overlay_on {
+	display: initial;
+}
+
 // ================
 // Grid
 // ================
@@ -138,19 +153,16 @@ $button-primary-bright: #65CDFB;
 }
 
 .chat-room__header {
+	position: relative;
 	flex-basis: 7%;
 	align-items: center;
 	background-color: $background-secondary;
 	box-shadow: 0 4px 10px 5px rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.3);
 }
 
-.chat-room__name {
-	margin-left: 2rem;
-	font-weight: bold;
-	font-size: 1.2rem;
-}
 
 .chat-room__messages {
+	position: relative;
 	flex-basis: 86%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -189,6 +201,39 @@ $button-primary-bright: #65CDFB;
 .chat-room__submit-button_hidden {
 	cursor: initial;
 	color: transparent;
+}
+
+// ================
+// Users
+// ================
+
+.user-list-dropdown {
+	align-items: center;
+	margin-left: 2rem;
+	cursor: pointer;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.user-list-dropdown__quantity {
+	font-weight: bold;
+	font-size: 1.2rem;
+	margin-right: 0.5rem;
+}
+
+.user-list-dropdown__list {
+	display: none;
+	position: absolute;
+	z-index: 99;
+	top: 4rem;
+	min-width: 80%;
+	padding: 1rem;
+	background-color: $background-secondary;
+	border-radius: 1rem;
+}
+
+.user-list-dropdown__list_open {
+	display: initial;
 }
 
 // ================

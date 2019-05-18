@@ -2,14 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
 import * as serviceWorker from './serviceWorker'
 
 import './index.scss'
 import App from './components/App'
 
-library.add(faArrowRight)
+library.add(faArrowRight, faAngleDown)
 
 ReactDOM.render(
   <BrowserRouter>
