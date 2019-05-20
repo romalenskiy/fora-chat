@@ -12,7 +12,8 @@ $background-secondary: #222d3b;
 $text-primary: #FFFFFF;
 $text-secondary: #66727E;
 $text-secondary-bright: #81A3C8;
-$text-green: #a1c395;
+$text-username: #a1c395;
+$text-error: #CA84A9;
 
 $button-primary: #62A9DC; 
 $button-primary-dark: scale-color($button-primary, $lightness: -20%);
@@ -58,6 +59,14 @@ $button-primary-bright: #65CDFB;
 
 .overlay_on {
 	display: initial;
+}
+
+.error {
+	justify-content: center;
+	color: $text-error;
+	padding: 1rem;
+	background-color: $background-secondary;
+	margin-bottom: 1rem;
 }
 
 // ================
@@ -240,6 +249,14 @@ $button-primary-bright: #65CDFB;
 	display: initial;
 }
 
+.user-list-dropdown__user {
+	margin-bottom: 0.3rem;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
 // ================
 // Message
 // ================
@@ -272,7 +289,7 @@ $button-primary-bright: #65CDFB;
 }
 
 .message__username {
-	color: $text-green;
+	color: $text-username;
 	font-weight: bold;
 	margin-bottom: 0.2rem;
 }

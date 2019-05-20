@@ -11,6 +11,7 @@ function App(props) {
 
   const [username, setUsername, isUsernameValid] = useInputControl()
   const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   function onUsernameChange(event) {
     setUsername(event.target.value)
@@ -24,9 +25,18 @@ function App(props) {
 
     if (history.location.pathname === '/') {
       (async () => {
-        const response = await fetch('/api/generateRoomId')
-        const newRoomId = await response.text()
-        history.push(`/rooms/${newRoomId}`)
+        try {
+          const response = await fetch('/api/generateRoomId')
+          if (response.ok) {
+            const newRoomId = await response.text()
+            history.push(`/rooms/${newRoomId}`)
+            setErrorMessage('')
+          } else {
+            setErrorMessage('Error :( Try to reload page!')
+          }
+        } catch (error) {
+          setErrorMessage(`Internal server error: ${error}`)
+        }
       })()
     }
   }
@@ -40,6 +50,8 @@ function App(props) {
 
   return (
     <div className="column app">
+      {errorMessage && <div className="row error">{errorMessage}</div>}
+
       <Switch>
         <Route
           exact
