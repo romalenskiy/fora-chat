@@ -39,3 +39,9 @@ Start dev server
 ```bash
 npm run dev
 ```
+
+Add Heroku remote:
+
+```bash
+heroku git:remote -a fora-chat
+```
