@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react'
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import LoginForm from '../LoginForm'
 import ChatRoom from '../ChatRoom'
@@ -33,30 +33,37 @@ function App(props) {
 
   return (
     <div className="column app">
-      <Route
-        exact
-        path="/"
-        render={() => (
-          <Fragment>
-            <span className="row logo">Fora Chat</span>
-            <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
-          </Fragment>
-        )}
-      />
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Fragment>
+              <span className="row logo">Fora Chat</span>
+              <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
+            </Fragment>
+          )}
+        />
 
-      <Route
-        path="/rooms/:roomId"
-        render={properties => (
-          isUsernameSubmitted
-            ? <ChatRoom {...properties} username={username} />
-            : (
-              <Fragment>
-                <span className="row logo">Fora Chat</span>
-                <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
-              </Fragment>
-            )
-        )}
-      />
+        <Route
+          path="/rooms/:roomId"
+          render={properties => (
+            isUsernameSubmitted
+              ? <ChatRoom {...properties} username={username} />
+              : (
+                <Fragment>
+                  <span className="row logo">Fora Chat</span>
+                  <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
+                </Fragment>
+              )
+          )}
+        />
+
+        <Route
+          path="*"
+          render={() => <Redirect to="/" />}
+        />
+      </Switch>
     </div>
   )
 }
