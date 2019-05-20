@@ -21,6 +21,9 @@ function ChatRoom(props) {
   const currentMessageRef = useRef()
   useAutofocus(currentMessageRef)
 
+  // Ref with information of header height for user list positioning
+  const headerRef = useRef()
+
   // User-entered message at the moment
   const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useControlledInput()
 
@@ -110,14 +113,14 @@ function ChatRoom(props) {
   return (
     <div className="column chat-room">
       {/* Header with user list and online users counter */}
-      <div className="row chat-room__header">
-        <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} />
+      <div className="row chat-room__header" ref={headerRef}>
+        <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} headerRef={headerRef} />
       </div>
 
       {/* Messages */}
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>
         <div className={messagesOverlayClass} />
-        {
+        { // Need to change source for "key" property if the message delete feature will be introduced
           messages.map((message, index) => {
             const { type, value, timestamp } = message
             return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} />

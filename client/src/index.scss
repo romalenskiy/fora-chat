@@ -236,13 +236,13 @@ $button-primary-bright: #65CDFB;
 .user-list-dropdown__list {
 	display: none;
 	position: absolute;
-	top: 4rem;
+	left: 0;
+	right: 0;
 	max-height: 20rem;
 	overflow-y: auto;
-	min-width: 80%;
-	padding: 1rem;
+	padding: 0 1rem 1rem 1rem;
 	background-color: $background-secondary;
-	border-radius: 1rem;
+	border-radius: 0 0 1rem 1rem;
 }
 
 .user-list-dropdown__list_open {
@@ -251,6 +251,7 @@ $button-primary-bright: #65CDFB;
 
 .user-list-dropdown__user {
 	margin-bottom: 0.3rem;
+	margin-left: 1rem;
 
 	&:last-of-type {
 		margin-bottom: 0;

@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import { withResizeDetector } from 'react-resize-detector'
 
 function UserListDropdown(props) {
-  const { users, handleMessagesOverlayToggle, handleMessagesOverlayOff } = props
+  const { height, users, handleMessagesOverlayToggle, handleMessagesOverlayOff, headerRef } = props
 
   // Chat room user list
   const [isUserListVisible, setIsUserListVisible] = useState(false)
+
+  // Change top position of user list depending on chat header size, when window resize event triggers
+  const [userListTop, setUserListTop] = useState(0)
+  useEffect(() => {
+    const headerHeight = Math.floor(headerRef.current.getBoundingClientRect().height)
+    setUserListTop(headerHeight)
+  }, [height])
 
   // Open dropdown and adding messages overlay on trigger click
   function onDropdownClick() {
@@ -20,6 +27,7 @@ function UserListDropdown(props) {
     handleMessagesOverlayOff()
   }
 
+  const userListStyle = { top: userListTop }
   let usersListClass = 'user-list-dropdown__list'
   if (isUserListVisible) { usersListClass += ' user-list-dropdown__list_open' }
 
@@ -31,7 +39,7 @@ function UserListDropdown(props) {
       <div className="user-list-dropdown__quantity">{numberOfUsers}</div>
       <FontAwesomeIcon icon="angle-down" />
 
-      <div className={usersListClass}>
+      <div className={usersListClass} style={userListStyle}>
         {
           users.length && users.map((user) => {
             const { id, username } = user
@@ -43,4 +51,4 @@ function UserListDropdown(props) {
   )
 }
 
-export default UserListDropdown
+export default withResizeDetector(UserListDropdown)
