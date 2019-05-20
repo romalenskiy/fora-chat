@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
-function useInputControl(defaultValue = '', defaultValidation = false, validationCallback = value => /\S+/.test(value)) {
+// Custom state hook to control elements and validate input
+function useControlledInput(defaultValue = '', defaultValidation = false, validationCallback = value => /\S+/.test(value)) {
   const [input, setInput] = useState(defaultValue)
   const [isInputValid, setIsInputValid] = useState(defaultValidation)
 
@@ -17,4 +18,4 @@ function useInputControl(defaultValue = '', defaultValidation = false, validatio
   ]
 }
 
-export default useInputControl
+export default useControlledInput

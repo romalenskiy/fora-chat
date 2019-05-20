@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Message from '../Message'
 import UserListDropdown from '../UserListDropdown'
-import useInputControl from '../../customHooks/useInputControl'
+import useControlledInput from '../../customHooks/useControlledInput'
 import useAutofocus from '../../customHooks/useAutofocus'
 
 function ChatRoom(props) {
@@ -22,12 +22,12 @@ function ChatRoom(props) {
   useAutofocus(currentMessageRef)
 
   // User-entered message at the moment
-  const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useInputControl()
+  const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useControlledInput()
 
   // All chat room messages
   const [messages, setMessages] = useState([])
 
-  // Chat overlay (blackout then dorpdown with users open)
+  // Chat overlay (blackout then dorpdown with user list opened)
   const [isMessagesOverlayOn, setIsMessagesOverlayOn] = useState(false)
 
   // Chat room users
@@ -100,16 +100,21 @@ function ChatRoom(props) {
     setIsMessagesOverlayOn(false)
   }
 
+  // Hide submit button, if message is invalid
   const submitButtonClass = `button ${isCurrentMessageValid ? 'chat-room__submit-button' : 'chat-room__submit-button_hidden'}`
+
+  // Add a darkening overlay, then user list opened
   let messagesOverlayClass = 'overlay'
   if (isMessagesOverlayOn) { messagesOverlayClass += ' overlay_on' }
 
   return (
     <div className="column chat-room">
+      {/* Header with user list and online users counter */}
       <div className="row chat-room__header">
         <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} />
       </div>
 
+      {/* Messages */}
       <div className="column chat-room__messages" ref={chatRoomMessagesRef}>
         <div className={messagesOverlayClass} />
         {
@@ -120,6 +125,7 @@ function ChatRoom(props) {
         }
       </div>
 
+      {/* Input new messages */}
       <form className="row chat-room__input-form" onSubmit={onCurrentMessageSubmit}>
         <input value={currentMessage} ref={currentMessageRef} onChange={onCurrentMessageChange} type="text" className="input chat-room__input" placeholder="Message" />
         <button className={submitButtonClass} type="submit">

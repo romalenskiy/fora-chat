@@ -3,11 +3,12 @@ import React from 'react'
 function Message(props) {
   const { value, type, username, timestamp } = props
 
-  const timestampFormatted = new Date(timestamp).toTimeString().slice(0, 5)
+  const timeString = new Date(timestamp).toTimeString().slice(0, 5)
 
   let messageBalloonClass = 'message__balloon '
   let messageTimestampClass = 'message__timestamp '
 
+  // Different styles of message balloons depending on who the message came from
   switch (type) {
     case 'my':
       messageBalloonClass += 'message__balloon_my'
@@ -27,8 +28,10 @@ function Message(props) {
     <div className="row message">
       <div className={messageBalloonClass}>
         {username && <div className="message__username">{username}</div>}
+
         <div className="message__text">{value}</div>
-        <div className={messageTimestampClass}>{timestampFormatted}</div>
+
+        <div className={messageTimestampClass}>{timeString}</div>
       </div>
     </div>
   )
