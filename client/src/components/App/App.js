@@ -1,7 +1,7 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import { withRouter, Route, Redirect, Switch } from 'react-router-dom'
 
-import LoginForm from '../LoginForm'
+import LoginPage from '../LoginPage'
 import ChatRoom from '../ChatRoom'
 
 import useInputControl from '../../customHooks/useInputControl'
@@ -31,32 +31,25 @@ function App(props) {
     }
   }
 
+  const loginPageProps = {
+    username,
+    isUsernameValid,
+    onChange: onUsernameChange,
+    onSubmit: onUsernameSubmit,
+  }
+
   return (
     <div className="column app">
       <Switch>
         <Route
           exact
           path="/"
-          render={() => (
-            <Fragment>
-              <span className="row logo">Fora Chat</span>
-              <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
-            </Fragment>
-          )}
+          render={() => <LoginPage {...loginPageProps} />}
         />
 
         <Route
           path="/rooms/:roomId"
-          render={properties => (
-            isUsernameSubmitted
-              ? <ChatRoom {...properties} username={username} />
-              : (
-                <Fragment>
-                  <span className="row logo">Fora Chat</span>
-                  <LoginForm username={username} isUsernameValid={isUsernameValid} onChange={onUsernameChange} onSubmit={onUsernameSubmit} />
-                </Fragment>
-              )
-          )}
+          render={properties => (isUsernameSubmitted ? <ChatRoom {...properties} username={username} /> : <LoginPage {...loginPageProps} />)}
         />
 
         <Route
