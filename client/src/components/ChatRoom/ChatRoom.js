@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Message from '../Message'
 import UserListDropdown from '../UserListDropdown'
 import useInputControl from '../../customHooks/useInputControl'
+import useAutofocus from '../../customHooks/useAutofocus'
 
 function ChatRoom(props) {
   const { username, match } = props
@@ -15,6 +16,10 @@ function ChatRoom(props) {
 
   // Need for auto scrolling when new message appears
   const chatRoomMessagesRef = useRef()
+
+  // Ref for message input autofocus
+  const currentMessageRef = useRef()
+  useAutofocus(currentMessageRef)
 
   // User-entered message at the moment
   const [currentMessage, setCurrentMessage, isCurrentMessageValid] = useInputControl()
@@ -116,7 +121,7 @@ function ChatRoom(props) {
       </div>
 
       <form className="row chat-room__input-form" onSubmit={onCurrentMessageSubmit}>
-        <input value={currentMessage} onChange={onCurrentMessageChange} type="text" className="input chat-room__input" placeholder="Message" />
+        <input value={currentMessage} ref={currentMessageRef} onChange={onCurrentMessageChange} type="text" className="input chat-room__input" placeholder="Message" />
         <button className={submitButtonClass} type="submit">
           <FontAwesomeIcon icon="arrow-right" />
         </button>
