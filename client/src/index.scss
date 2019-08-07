@@ -259,6 +259,95 @@ $button-primary-bright: #65CDFB;
 }
 
 // ================
+// Stickers
+// ================
+.stickers {
+	width: 28px;
+	height: 27px;
+}
+
+.stickers__icon {
+	background-image: url("https://cdn2.iconfinder.com/data/icons/set-of-stickers/154/sticker-smile-face-enjoy-label-512.png");
+	width: 27px;
+	height: 27px;
+	background-size: cover;
+	cursor: pointer;
+}
+
+.stickers__container {
+	position: relative;
+	width: 0;
+	height: 0;
+}
+
+.stickers__block__hide {
+	display: none;
+}
+
+.stickers__block {
+	position: absolute;
+	width: 300px;
+	height: 150px;
+	background-color: $background-primary;
+	top: -190px;
+	right: -25px;
+	padding: 10px 0px 0px 0px;
+}
+
+.stickers__list {
+	display: flex;
+	background-color: $background-secondary;
+	height: 140px;
+	width: 300px;
+	padding: 20px 10px;
+}
+
+.stickers__item {
+	height: 100px;
+	width: 100px;
+	margin-right: 10px;
+	background-size: cover;
+	cursor: pointer;
+	border: $background-primary 2px solid;
+	border-radius: 6px;
+	transition: .3s;
+}
+
+.stickers__item:hover {
+	background-color: $text-secondary;
+}
+
+.stickers__block:before, .stickers__block:after {
+	content: '';
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094, 
+		#0000ff, #00ff00,#ffff00, #ff0000);
+	background-size: 400%;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	z-index: -1;
+	animation: steam 20s linear infinite;
+}
+
+@keyframes steam {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+.stickers__block:after {
+	filter: blur(50px);
+}
+
+// ================
 // Message
 // ================
 .message {
@@ -310,6 +399,12 @@ $button-primary-bright: #65CDFB;
 
 .message__timestamp_foreign {
 	color: $text-secondary;
+}
+
+.message__sticker {
+	height: 100px;
+	width: 100px;
+	background-size: cover;
 }
 
 // ================
