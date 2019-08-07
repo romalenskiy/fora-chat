@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import useComponentFocus from '../../customHooks/useComponentFocus'
-import io from 'socket.io-client'
 
 export default function Stickers({getSticker}) {
     const [stickersDisplay, showStickers] = useState(false);
