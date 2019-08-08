@@ -286,26 +286,31 @@ $button-primary-bright: #65CDFB;
 
 .stickers__block {
 	position: absolute;
-	width: 300px;
+	width: 315px;
 	height: 150px;
 	background-color: $background-primary;
 	top: -190px;
 	right: -25px;
-	padding: 10px 0px 0px 0px;
+	border-radius: 10px;
 }
 
 .stickers__list {
 	display: flex;
+	flex-flow: row wrap;
+	overflow: auto;
 	background-color: $background-secondary;
-	height: 140px;
+	height: 150px;
 	width: 300px;
-	padding: 20px 10px;
+	padding: 10px 10px;
+	border-radius: 10px;
+	margin: auto;
 }
 
 .stickers__item {
-	height: 100px;
-	width: 100px;
+	height: 55px;
+	width: 55px;
 	margin-right: 10px;
+	margin-bottom: 10px;
 	background-size: cover;
 	cursor: pointer;
 	border: $background-primary 2px solid;
@@ -329,6 +334,7 @@ $button-primary-bright: #65CDFB;
 	height: calc(100% + 4px);
 	z-index: -1;
 	animation: steam 20s linear infinite;
+	border-radius: 10px;
 }
 
 @keyframes steam {
