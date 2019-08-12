@@ -1,7 +1,5 @@
 # Fora chat
 
-Important change!
-
 As part of the test task, I needed to develop a JavaScript application - text chat:
 
 * After opening a page, user should enter his name
