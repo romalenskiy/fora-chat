@@ -32,7 +32,7 @@ function Message(props) {
         {username && <div className="message__username">{username}</div>}
 
         <div className="message__text">
-          {isSticker ? <div className="message__sticker" style={{ backgroundImage: value }} /> : value}
+          {isSticker ? <div className="message__sticker" style={{ backgroundImage: `url(${value})` }} /> : value}
 
         </div>
 

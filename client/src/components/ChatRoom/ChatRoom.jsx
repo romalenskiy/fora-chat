@@ -105,7 +105,7 @@ function ChatRoom(props) {
   }
 
   // Send sticker
-  const getSticker = (sticker) => {
+  const sendSticker = (sticker) => {
     const newMessage = { value: sticker, timestamp: Date.now(), isSticker: true }
 
     // Emit new message for users-recipients
@@ -136,8 +136,10 @@ function ChatRoom(props) {
         <div className={messagesOverlayClass} />
         { // Need to change source for "key" property if the message delete feature will be introduced
           messages.map((message, index) => {
-            const { type, value, timestamp } = message
-            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} isSticker={message.isSticker} />
+            const {
+              type, value, timestamp, isSticker,
+            } = message
+            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} isSticker={isSticker} />
           })
         }
       </div>
@@ -145,7 +147,7 @@ function ChatRoom(props) {
       {/* Input new messages */}
       <form className="row chat-room__input-form" onSubmit={onCurrentMessageSubmit}>
         <input value={currentMessage} ref={currentMessageRef} onChange={onCurrentMessageChange} type="text" className="input chat-room__input" placeholder="Message" />
-        <Stickers getSticker={getSticker} />
+        <Stickers sendSticker={sendSticker} />
         <button className={submitButtonClass} type="submit">
           <FontAwesomeIcon icon="arrow-right" />
         </button>

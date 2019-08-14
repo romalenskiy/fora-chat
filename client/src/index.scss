@@ -271,8 +271,8 @@ $button-primary-bright: #65CDFB;
 	width: 27px;
 	height: 27px;
 	background-size: cover;
-	cursor: pointer;
 	background-color: transparent;
+	cursor: pointer;
 	border: 0px;
 	outline:0;
 }
@@ -283,7 +283,7 @@ $button-primary-bright: #65CDFB;
 	height: 0;
 }
 
-.stickers__block__hide {
+.stickers__block_hidden {
 	display: none;
 }
 
@@ -295,6 +295,20 @@ $button-primary-bright: #65CDFB;
 	top: -190px;
 	right: -25px;
 	border-radius: 10px;
+	&:before, &:after {
+		content: '';
+		position: absolute;
+		left: -2px;
+		top: -2px;
+		background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094, 
+			#0000ff, #00ff00,#ffff00, #ff0000);
+		background-size: 400%;
+		width: calc(100% + 4px);
+		height: calc(100% + 4px);
+		z-index: -1;
+		animation: steam 20s linear infinite;
+		border-radius: 10px;
+	}
 }
 
 .stickers__list {
@@ -321,25 +335,9 @@ $button-primary-bright: #65CDFB;
 	transition: .3s;
 	background-color: transparent;
 	outline:0;
-}
-
-.stickers__item:hover {
-	background-color: $text-secondary;
-}
-
-.stickers__block:before, .stickers__block:after {
-	content: '';
-	position: absolute;
-	left: -2px;
-	top: -2px;
-	background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094, 
-		#0000ff, #00ff00,#ffff00, #ff0000);
-	background-size: 400%;
-	width: calc(100% + 4px);
-	height: calc(100% + 4px);
-	z-index: -1;
-	animation: steam 20s linear infinite;
-	border-radius: 10px;
+	&:hover {
+		background-color: $text-secondary;
+	}
 }
 
 @keyframes steam {
@@ -428,6 +426,13 @@ $button-primary-bright: #65CDFB;
 		flex-basis: 100%;
 		box-shadow: none;
 		border-radius: 0;
+	}
+	.stickers__block{
+		width: 66vw;
+	}
+	.stickers__list{
+		width: 66vw;
+		padding-right: 0px;
 	}
 }
 

@@ -1,28 +1,39 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useCallback } from 'react'
 import useComponentFocus from '../../customHooks/useComponentFocus'
-import stickersArray from './stickersList'
+import stickersList from './stickersList'
 
-export default function Stickers({ getSticker }) {
-  const [stickersDisplay, showStickers] = useState(false)
+export default function Stickers({ sendSticker }) {
+  const [isStickersVisible, setIsStickersVisible] = useState(false)
 
-  const [stickersRef] = useComponentFocus(() => { showStickers(false) })
+  const [stickersRef] = useComponentFocus(() => { setIsStickersVisible(false) })
 
-  const changeStickersDisplay = () => {
-    showStickers(!stickersDisplay)
+  const changeStickersDisplay = useCallback(() => {
+    setIsStickersVisible(!isStickersVisible)
+  }, [isStickersVisible])
+
+  const onStickerSend = (value) => {
+    setIsStickersVisible(false)
+    sendSticker(value)
   }
 
-  const sendSticker = (event) => {
-    showStickers(false)
-    getSticker(event.target.style.backgroundImage)
-  }
+  const stickersBlockClass = `stickers__block ${!isStickersVisible ? 'stickers__block_hidden' : ''}`.trim()
 
   return (
     <div className="stickers" ref={stickersRef}>
       <button className="stickers__icon" onClick={changeStickersDisplay} type="button" />
       <div className="stickers__container">
-        <div className={stickersDisplay ? 'stickers__block' : 'stickers__block__hide'}>
+        <div className={stickersBlockClass}>
           <div className="stickers__list">
-            {stickersArray.map(sticker => <button type="button" className="stickers__item" onClick={sendSticker} key={sticker.key} title={sticker.key} style={{ backgroundImage: sticker.image }} />)}
+            {Object.entries(stickersList).map(([key, value]) => (
+              <button
+                type="button"
+                className="stickers__item"
+                onClick={() => onStickerSend(value)}
+                key={key}
+                title={key}
+                style={{ backgroundImage: `url(${value})` }}
+              />
+            ))}
           </div>
         </div>
       </div>
