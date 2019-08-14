@@ -44,7 +44,7 @@ function ChatRoom(props) {
     return () => {
       socket.current.disconnect()
     }
-  }, [])
+  }, [roomId])
 
   useEffect(() => {
     // Emit data about newly connected user to other users
@@ -59,7 +59,7 @@ function ChatRoom(props) {
     socket.current.on('user disconnected chat room', (newUserList) => {
       setUsers(newUserList)
     })
-  }, [])
+  }, [username])
 
   // Add listener on new message receive.
   // Because of subtlety in work of useEffect hook (need to provide "fresh" messages state variable on every render),
@@ -104,9 +104,9 @@ function ChatRoom(props) {
     setIsMessagesOverlayOn(false)
   }
 
-  //Send sticker
+  // Send sticker
   const getSticker = (sticker) => {
-    const newMessage = { value: sticker, timestamp: Date.now(), isSticker: true };
+    const newMessage = { value: sticker, timestamp: Date.now(), isSticker: true }
 
     // Emit new message for users-recipients
     const newMessageForRecipients = { type: 'foreign', username, ...newMessage }
@@ -137,7 +137,7 @@ function ChatRoom(props) {
         { // Need to change source for "key" property if the message delete feature will be introduced
           messages.map((message, index) => {
             const { type, value, timestamp } = message
-            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} isSticker={message.isSticker}/>
+            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} isSticker={message.isSticker} />
           })
         }
       </div>
