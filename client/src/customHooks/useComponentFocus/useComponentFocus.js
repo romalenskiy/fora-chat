@@ -13,9 +13,9 @@ export default function useComponentFocus(callback) {
     }
 
     useEffect(()=>{
-        document.addEventListener('mousedown', handleClick);
+        document.addEventListener('click', handleClick);
         return () => {
-            document.removeEventListener('mousedown', handleClick)
+            document.removeEventListener('click', handleClick)
         }
     }, [handleClick])
 
