@@ -259,6 +259,98 @@ $button-primary-bright: #65CDFB;
 }
 
 // ================
+// Stickers
+// ================
+.stickers {
+	width: 28px;
+	height: 27px;
+}
+
+.stickers__icon {
+	background-image: url("https://cdn2.iconfinder.com/data/icons/set-of-stickers/154/sticker-smile-face-enjoy-label-512.png");
+	width: 27px;
+	height: 27px;
+	background-size: cover;
+	background-color: transparent;
+}
+
+.stickers__container {
+	position: relative;
+	width: 0;
+	height: 0;
+}
+
+.stickers__block_hidden {
+	display: none;
+}
+
+.stickers__block {
+	position: absolute;
+	width: 315px;
+	height: 150px;
+	background-color: $background-primary;
+	top: -190px;
+	right: -25px;
+	border-radius: 10px;
+	&:before, &:after {
+		content: '';
+		position: absolute;
+		left: -2px;
+		top: -2px;
+		background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094, 
+			#0000ff, #00ff00,#ffff00, #ff0000);
+		background-size: 400%;
+		width: calc(100% + 4px);
+		height: calc(100% + 4px);
+		z-index: -1;
+		animation: steam 20s linear infinite;
+		border-radius: 10px;
+	}
+}
+
+.stickers__list {
+	display: flex;
+	flex-flow: row wrap;
+	overflow: auto;
+	background-color: $background-secondary;
+	height: 150px;
+	width: 300px;
+	padding: 10px 10px;
+	border-radius: 10px;
+	margin: auto;
+}
+
+.stickers__item {
+	height: 55px;
+	width: 55px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	background-size: cover;
+	border-radius: 6px;
+	transition: .3s;
+	background-color: transparent;
+	&:hover {
+		background-color: $text-secondary;
+	}
+}
+
+@keyframes steam {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+.stickers__block:after {
+	filter: blur(50px);
+}
+
+// ================
 // Message
 // ================
 .message {
@@ -312,6 +404,12 @@ $button-primary-bright: #65CDFB;
 	color: $text-secondary;
 }
 
+.message__sticker {
+	height: 100px;
+	width: 100px;
+	background-size: cover;
+}
+
 // ================
 // Media queries
 // ================
@@ -322,6 +420,14 @@ $button-primary-bright: #65CDFB;
 		flex-basis: 100%;
 		box-shadow: none;
 		border-radius: 0;
+	}
+	.stickers__block{
+		width: 66vw;
+	}
+	.stickers__list{
+		width: 66vw;
+		padding: 10px 0px;
+		justify-content: center;
 	}
 }
 

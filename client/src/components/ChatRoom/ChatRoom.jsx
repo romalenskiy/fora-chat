@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Message from '../Message'
+import Stickers from '../Stickers'
 import UserListDropdown from '../UserListDropdown'
 import useControlledInput from '../../customHooks/useControlledInput'
 import useAutofocus from '../../customHooks/useAutofocus'
@@ -43,7 +44,7 @@ function ChatRoom(props) {
     return () => {
       socket.current.disconnect()
     }
-  }, [])
+  }, [roomId])
 
   useEffect(() => {
     // Emit data about newly connected user to other users
@@ -58,7 +59,7 @@ function ChatRoom(props) {
     socket.current.on('user disconnected chat room', (newUserList) => {
       setUsers(newUserList)
     })
-  }, [])
+  }, [username])
 
   // Add listener on new message receive.
   // Because of subtlety in work of useEffect hook (need to provide "fresh" messages state variable on every render),
@@ -83,7 +84,7 @@ function ChatRoom(props) {
     event.preventDefault()
     if (!isCurrentMessageValid) return
 
-    const newMessage = { value: currentMessage, timestamp: Date.now() }
+    const newMessage = { value: currentMessage, timestamp: Date.now(), isSticker: false }
 
     // Emit new message for users-recipients
     const newMessageForRecipients = { type: 'foreign', username, ...newMessage }
@@ -101,6 +102,19 @@ function ChatRoom(props) {
 
   function handleMessagesOverlayOff() {
     setIsMessagesOverlayOn(false)
+  }
+
+  // Send sticker
+  const sendSticker = (sticker) => {
+    const newMessage = { value: sticker, timestamp: Date.now(), isSticker: true }
+
+    // Emit new message for users-recipients
+    const newMessageForRecipients = { type: 'foreign', username, ...newMessage }
+    socket.current.emit('chat message', newMessageForRecipients)
+
+    // Render new message for user-sender
+    const newMessageForSender = { type: 'my', ...newMessage }
+    setMessages([...messages, newMessageForSender])
   }
 
   // Hide submit button, if message is invalid
@@ -122,8 +136,10 @@ function ChatRoom(props) {
         <div className={messagesOverlayClass} />
         { // Need to change source for "key" property if the message delete feature will be introduced
           messages.map((message, index) => {
-            const { type, value, timestamp } = message
-            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} />
+            const {
+              type, value, timestamp, isSticker,
+            } = message
+            return <Message key={index} type={type} username={message.username} value={value} timestamp={timestamp} isSticker={isSticker} />
           })
         }
       </div>
@@ -131,6 +147,7 @@ function ChatRoom(props) {
       {/* Input new messages */}
       <form className="row chat-room__input-form" onSubmit={onCurrentMessageSubmit}>
         <input value={currentMessage} ref={currentMessageRef} onChange={onCurrentMessageChange} type="text" className="input chat-room__input" placeholder="Message" />
+        <Stickers sendSticker={sendSticker} />
         <button className={submitButtonClass} type="submit">
           <FontAwesomeIcon icon="arrow-right" />
         </button>
