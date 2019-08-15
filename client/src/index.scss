@@ -272,9 +272,6 @@ $button-primary-bright: #65CDFB;
 	height: 27px;
 	background-size: cover;
 	background-color: transparent;
-	cursor: pointer;
-	border: 0px;
-	outline:0;
 }
 
 .stickers__container {
@@ -329,12 +326,9 @@ $button-primary-bright: #65CDFB;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	background-size: cover;
-	cursor: pointer;
-	border: $background-primary 2px solid;
 	border-radius: 6px;
 	transition: .3s;
 	background-color: transparent;
-	outline:0;
 	&:hover {
 		background-color: $text-secondary;
 	}
@@ -432,7 +426,8 @@ $button-primary-bright: #65CDFB;
 	}
 	.stickers__list{
 		width: 66vw;
-		padding-right: 0px;
+		padding: 10px 0px;
+		justify-content: center;
 	}
 }
 

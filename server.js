@@ -5,7 +5,6 @@ const io = require('socket.io')(server)
 const path = require('path')
 const uniqid = require('uniqid')
 const port = process.env.PORT || 5000
-process.env.NODE_ENV = 'production'
 
 // =========================
 // Routes

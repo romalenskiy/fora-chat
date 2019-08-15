@@ -11,24 +11,24 @@ export default function Stickers({ sendSticker }) {
     setIsStickersVisible(!isStickersVisible)
   }, [isStickersVisible])
 
-  const onStickerSend = (value) => {
+  const onStickerSend = useCallback(value => () => {
     setIsStickersVisible(false)
     sendSticker(value)
-  }
+  }, [sendSticker])
 
   const stickersBlockClass = `stickers__block ${!isStickersVisible ? 'stickers__block_hidden' : ''}`.trim()
 
   return (
     <div className="stickers" ref={stickersRef}>
-      <button className="stickers__icon" onClick={changeStickersDisplay} type="button" />
+      <button className="button stickers__icon" onClick={changeStickersDisplay} type="button" />
       <div className="stickers__container">
         <div className={stickersBlockClass}>
           <div className="stickers__list">
             {Object.entries(stickersList).map(([key, value]) => (
               <button
                 type="button"
-                className="stickers__item"
-                onClick={() => onStickerSend(value)}
+                className="button stickers__item"
+                onClick={onStickerSend(value)}
                 key={key}
                 title={key}
                 style={{ backgroundImage: `url(${value})` }}
