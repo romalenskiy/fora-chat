@@ -48,7 +48,7 @@ $button-primary-bright: #65CDFB;
 .overlay {
 	display: none;
 	position: fixed;
-	z-index: 9;
+	z-index: 99;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -158,13 +158,13 @@ $button-primary-bright: #65CDFB;
 
 .chat-room__header, .chat-room__input-form {
 	position: relative;
-	z-index: 99;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 }
 
 .chat-room__header {
 	position: relative;
+	z-index: 999;
 	flex-basis: 7%;
 	align-items: center;
 	background-color: $background-secondary;
