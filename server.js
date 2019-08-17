@@ -66,6 +66,15 @@ io.on('connection', (socket) => {
     console.log(rooms)
   })
 
+  // Listening on users typing
+  socket.on('user started typing', (username) => {
+    io.in(roomId).emit('add typing user', username)
+  })
+
+  socket.on('user stopped typing', (username) => {
+    io.in(roomId).emit('delete typing user', username)
+  })
+
   // Listening on new message in the room
   socket.on('chat message', (message) => {
     console.log(`message: ${message.value}`)

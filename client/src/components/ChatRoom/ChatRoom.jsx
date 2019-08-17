@@ -77,6 +77,7 @@ function ChatRoom(props) {
   }, [messages])
 
   function onCurrentMessageChange(event) {
+    userIsTyping(username)
     setCurrentMessage(event.target.value)
   }
 
@@ -117,6 +118,35 @@ function ChatRoom(props) {
     setMessages([...messages, newMessageForSender])
   }
 
+  // Show typing users
+  const [typingTimeout, setTypingTimeout] = useState(undefined)
+  const userIsTyping = (username) => {
+    const userStoppedTyping = () => {
+      socket.current.emit('user stopped typing', username)
+    }
+    clearTimeout(typingTimeout)
+    socket.current.emit('user started typing', username)
+    setTypingTimeout(setTimeout(userStoppedTyping, 5000))
+  }
+
+  const [typingUsers, setTypingUsers] = useState([])
+  useEffect(()=>{
+    socket.current.on('add typing user', (newTypingUser) => {
+      if(!(newTypingUser == username)) {
+        if(!typingUsers.includes(newTypingUser)) {
+          typingUsers.push(newTypingUser)
+          setTypingUsers([...typingUsers])
+        }
+      }
+    })
+    socket.current.on('delete typing user', (newTypingUser) => {
+      typingUsers.splice(typingUsers.indexOf(newTypingUser), 1)
+      setTypingUsers([...typingUsers])
+    })
+  }, [typingUsers])
+
+  const currentTypingUsers = typingUsers.length > 0 ? `${typingUsers.map(user => {return typingUsers.length > 1 ? ` ${user}`:`${user}`})} ${typingUsers.length > 1 ? `are`:`is`} typing...`:``
+
   // Hide submit button, if message is invalid
   const submitButtonClass = `button ${isCurrentMessageValid ? 'chat-room__submit-button' : 'chat-room__submit-button_hidden'}`
 
@@ -129,6 +159,9 @@ function ChatRoom(props) {
       {/* Header with user list and online users counter */}
       <div className="row chat-room__header" ref={headerRef}>
         <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} headerRef={headerRef} />
+        <div className="chat-room__header__typingUsers">
+          {currentTypingUsers}
+        </div>
       </div>
 
       {/* Messages */}
