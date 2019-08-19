@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import useComponentFocus from '../../customHooks/useComponentFocus'
 import stickersList from './stickersList'
+import StickersIcon from './StickersIcon'
 
 export default function Stickers({ sendSticker }) {
   const [isStickersVisible, setIsStickersVisible] = useState(false)
@@ -20,7 +21,9 @@ export default function Stickers({ sendSticker }) {
 
   return (
     <div className="stickers" ref={stickersRef}>
-      <button className="button stickers__icon" onClick={changeStickersDisplay} type="button" />
+      <button className="button stickers__icon" onClick={changeStickersDisplay} type="button">
+        <StickersIcon />
+      </button>
       <div className="stickers__container">
         <div className={stickersBlockClass}>
           <div className="stickers__list">
