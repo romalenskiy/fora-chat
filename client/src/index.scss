@@ -217,6 +217,7 @@ $button-primary-bright: #65CDFB;
 }
 
 .chat-room__input-form {
+	align-items: center;
 	flex-basis: 7%;
 	background-color: $background-secondary;
 	box-shadow: 0 4px 10px 5px rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.3);
