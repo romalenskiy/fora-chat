@@ -299,17 +299,22 @@ $button-primary-bright: #65CDFB;
 // Stickers
 // ================
 .stickers {
-	width: 28px;
-	height: 27px;
+	padding: 0;
+	height: 24px;
 }
 
 .stickers__icon {
-	background-image: url("https://cdn2.iconfinder.com/data/icons/set-of-stickers/154/sticker-smile-face-enjoy-label-512.png");
-	width: 27px;
-	height: 27px;
-	background-size: cover;
+	width: 24px;
+	height: 24px;
+	color: $button-primary-bright;
 	background-color: transparent;
+	padding: 0;
 }
+
+.stickers__iconSVG:hover g {
+	fill: #afe7ff;
+}
+
 
 .stickers__container {
 	position: relative;
