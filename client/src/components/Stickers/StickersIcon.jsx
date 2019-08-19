@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function StickersIcon() {
   return (
-    <div style={{ height: '24px' }}>
+    <div className="stickers__iconSVG">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0px"

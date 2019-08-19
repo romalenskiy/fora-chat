@@ -311,6 +311,10 @@ $button-primary-bright: #65CDFB;
 	padding: 0;
 }
 
+.stickers__iconSVG:hover g {
+	fill: #afe7ff;
+}
+
 
 .stickers__container {
 	position: relative;
