@@ -171,6 +171,42 @@ $button-primary-bright: #65CDFB;
 	box-shadow: 0 4px 10px 5px rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.3);
 }
 
+.chat-room__headerTypingUsers {
+	margin-left: 20px;
+	font-weight: 500;
+	color: $button-primary-bright;
+	display: flex;
+	@keyframes blink {
+		0% {
+		  opacity: .2;
+		}
+		20% {
+		  opacity: 1;
+		}
+		100% {
+		  opacity: .2;
+		}
+	}
+	span {
+		animation-name: blink;
+		animation-duration: 1.4s;
+		animation-iteration-count: infinite;
+		animation-fill-mode: both;
+		display: block;
+		height: 4px;
+		width: 4px;
+		border-radius: 50%;
+		background-color: $button-primary-bright;
+		margin-left: 3px;
+		margin-top: 10px;
+		&:nth-child(2){
+			animation-delay: .2s;
+		}
+		&:nth-child(3){
+			animation-delay: .4s;
+		}
+	}
+}
 
 .chat-room__messages {
 	position: relative;
@@ -181,6 +217,7 @@ $button-primary-bright: #65CDFB;
 }
 
 .chat-room__input-form {
+	align-items: center;
 	flex-basis: 7%;
 	background-color: $background-secondary;
 	box-shadow: 0 4px 10px 5px rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.3);
@@ -292,20 +329,7 @@ $button-primary-bright: #65CDFB;
 	top: -190px;
 	right: -25px;
 	border-radius: 10px;
-	&:before, &:after {
-		content: '';
-		position: absolute;
-		left: -2px;
-		top: -2px;
-		background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00,#ffff00, #ff0000, #fb0094, 
-			#0000ff, #00ff00,#ffff00, #ff0000);
-		background-size: 400%;
-		width: calc(100% + 4px);
-		height: calc(100% + 4px);
-		z-index: -1;
-		animation: steam 20s linear infinite;
-		border-radius: 10px;
-	}
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .stickers__list {
