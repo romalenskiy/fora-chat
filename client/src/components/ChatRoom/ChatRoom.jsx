@@ -77,7 +77,6 @@ function ChatRoom(props) {
   }, [messages])
 
   function onCurrentMessageChange(event) {
-    userIsTyping(username)
     setCurrentMessage(event.target.value)
   }
 
@@ -95,6 +94,9 @@ function ChatRoom(props) {
     const newMessageForSender = { type: 'my', ...newMessage }
     setMessages([...messages, newMessageForSender])
     setCurrentMessage('')
+
+    socket.current.emit('user stopped typing', username)
+    clearTimeout(typingTimeout.current)
   }
 
   function handleMessagesOverlayToggle() {
@@ -119,24 +121,26 @@ function ChatRoom(props) {
   }
 
   // Show typing users
-  const [typingTimeout, setTypingTimeout] = useState(undefined)
-  const userIsTyping = (username) => {
+  const typingTimeout = useRef(null)
+  useEffect(() => {
+    if (!currentMessage) return
+
+    socket.current.emit('user started typing', username)
+
+    clearTimeout(typingTimeout.current)
+
     const userStoppedTyping = () => {
       socket.current.emit('user stopped typing', username)
     }
-    clearTimeout(typingTimeout)
-    socket.current.emit('user started typing', username)
-    setTypingTimeout(setTimeout(userStoppedTyping, 5000))
-  }
+    typingTimeout.current = setTimeout(userStoppedTyping, 5000)
+  }, [currentMessage, username])
 
   const [typingUsers, setTypingUsers] = useState([])
-  useEffect(()=>{
+  useEffect(() => {
     socket.current.on('add typing user', (newTypingUser) => {
-      if(!(newTypingUser == username)) {
-        if(!typingUsers.includes(newTypingUser)) {
-          typingUsers.push(newTypingUser)
-          setTypingUsers([...typingUsers])
-        }
+      if (!typingUsers.includes(newTypingUser)) {
+        typingUsers.push(newTypingUser)
+        setTypingUsers([...typingUsers])
       }
     })
     socket.current.on('delete typing user', (newTypingUser) => {
@@ -145,7 +149,17 @@ function ChatRoom(props) {
     })
   }, [typingUsers])
 
-  const currentTypingUsers = typingUsers.length > 0 ? `${typingUsers.map(user => {return typingUsers.length > 1 ? ` ${user}`:`${user}`})} ${typingUsers.length > 1 ? `are`:`is`} typing...`:``
+  useEffect(() => {
+    const currentUsers = users.map(user => user.username)
+    typingUsers.map((typingUser) => {
+      if (!currentUsers.includes(typingUser)) {
+        typingUsers.splice(typingUsers.indexOf(typingUser), 1)
+        setTypingUsers([...typingUsers])
+      }
+    })
+  }, [typingUsers, users])
+
+  const currentTypingUsers = `${typingUsers.join(', ')} ${typingUsers.length === 1 ? 'is' : 'are'} typing`
 
   // Hide submit button, if message is invalid
   const submitButtonClass = `button ${isCurrentMessageValid ? 'chat-room__submit-button' : 'chat-room__submit-button_hidden'}`
@@ -159,9 +173,14 @@ function ChatRoom(props) {
       {/* Header with user list and online users counter */}
       <div className="row chat-room__header" ref={headerRef}>
         <UserListDropdown users={users} handleMessagesOverlayToggle={handleMessagesOverlayToggle} handleMessagesOverlayOff={handleMessagesOverlayOff} headerRef={headerRef} />
-        <div className="chat-room__header__typingUsers">
-          {currentTypingUsers}
-        </div>
+        {Boolean(typingUsers.length) && (
+          <div className="chat-room__headerTypingUsers">
+            {currentTypingUsers}
+            <span />
+            <span />
+            <span />
+          </div>
+        )}
       </div>
 
       {/* Messages */}
