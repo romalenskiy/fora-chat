@@ -69,6 +69,23 @@ $button-primary-bright: #65CDFB;
 	margin-bottom: 1rem;
 }
 
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #646464;
+	border-radius: 8px;
+	&:hover {
+		background: #808080;
+	}
+}
+
+
 // ================
 // Grid
 // ================
@@ -312,6 +329,7 @@ $button-primary-bright: #65CDFB;
 }
 
 .stickers__iconSVG:hover g {
+	transition: .1s;
 	fill: #afe7ff;
 }
 
@@ -347,6 +365,7 @@ $button-primary-bright: #65CDFB;
 	padding: 10px 10px;
 	border-radius: 10px;
 	margin: auto;
+	justify-content: center;
 }
 
 .stickers__item {
@@ -456,7 +475,6 @@ $button-primary-bright: #65CDFB;
 	.stickers__list{
 		width: 66vw;
 		padding: 10px 0px;
-		justify-content: center;
 	}
 }
 
